@@ -13,13 +13,21 @@ on:
 env:
   AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  TF_WORKSPACE: development
   TF_VAR_aws_provider_external_id: ${{ secrets.AWS_PROVIDER_EXTERNAL_ID }}
   TF_VAR_aws_provider_role_arn: ${{ secrets.AWS_PROVIDER_ROLE_ARN }}
 
 jobs:
   plan:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        workspace:
+          - development
+          - production
+
+    env:
+      TF_WORKSPACE: ${{ matrix.workspace }}
 
     steps:
       - name: Checkout

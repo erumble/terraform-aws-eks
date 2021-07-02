@@ -17,7 +17,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      Environment = var.environment
+      Environment = terraform.workspace
       ManagedBy   = "Terraform"
       Source      = "https://github.com/erumble/tf-eks"
     }

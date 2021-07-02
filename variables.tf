@@ -6,8 +6,3 @@ variable "aws_provider_role_arn" {
 variable "aws_provider_external_id" {
   description = "The External ID to use when the provider assumes the given IAM role."
 }
-
-variable "environment" {
-  description = "Name of the environment in which resources are being deployed."
-  type        = string
-}
