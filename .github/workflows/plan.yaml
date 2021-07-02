@@ -63,14 +63,12 @@ jobs:
         uses: actions/github-script@v4
         if: github.event_name == 'pull_request'
         env:
-          PLAN: "terraform\n${{ steps.tf-plan.outputs.stdout }}"
+          PLAN: "Terraform\n${{ steps.tf-plan.outputs.stdout }}"
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `#### Terraform Format and Style 🖌\`${{ steps.tf-fmt.outcome }}\`
-            #### Terraform Initialization ⚙️\`${{ steps.tf-init.outcome }}\`
-            #### Terraform Plan 📖\`${{ steps.tf-plan.outcome }}\`
-            #### Terraform Validation 🤖\`${{ steps.tf-validate.outputs.stdout }}\`
+            const plan_result = `#### Terraform Plan for \`${{ env.TF_WORKSPACE }}\` - \`${{ steps.tf-plan.outcome }}\``;
+            const output = `${plan_result}
 
             <details><summary>Show Plan</summary>
 
