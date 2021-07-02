@@ -67,8 +67,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const plan_result = `#### Terraform Plan for \`${{ env.TF_WORKSPACE }}\` - \`${{ steps.tf-plan.outcome }}\``;
-            const output = `${plan_result}
+            const plan_header = `#### Terraform Plan for \`${{ env.TF_WORKSPACE }}\``;
+            const output = `${plan_header}
 
             <details><summary>Show Plan</summary>
 
@@ -80,12 +80,34 @@ jobs:
 
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-            github.issues.createComment({
-              issue_number: context.issue.number,
+            const opts = github.issues.listComments.endpoint.merge({
+              ...context.issue,
               owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
+              repo: context.repo.repo
             })
+
+            const comments = await github.paginate(opts)
+
+            for (const comment of comments) {
+              if (comment.body.startsWith(plan_header)) {
+                github.issues.updateComment({
+                  comment_id: comment.id,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: output
+                })
+
+                return
+              }
+              else {
+                github.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: output
+                })
+              }
+            }
 
       - name: Terraform Plan Status
         if: steps.tf-plan.outcome == 'failure'
