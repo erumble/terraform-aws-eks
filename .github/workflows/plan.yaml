@@ -86,11 +86,11 @@ jobs:
             //   repo: context.repo.repo
             // })
 
-            const creator = context.payload.sender.login
-            const opts = github.issues.listForRepo.endpoint.merge({
+            // const creator = context.payload.sender.login
+            const opts = github.issues.listComments.endpoint.merge({
               ...context.issue,
-              creator,
-              state: 'all'
+              owner: context.repo.owner,
+              repo: context.repo.repo
             })
 
             const comments = await github.paginate(opts)
