@@ -80,10 +80,17 @@ jobs:
 
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-            const opts = github.issues.listComments({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo
+            // const opts = github.issues.listComments({
+            //   issue_number: context.issue.number,
+            //   owner: context.repo.owner,
+            //   repo: context.repo.repo
+            // })
+
+            const creator = context.payload.sender.login
+            const opts = github.issues.listForRepo.endpoint.merge({
+              ...context.issue,
+              creator,
+              state: 'all'
             })
 
             const comments = await github.paginate(opts)
