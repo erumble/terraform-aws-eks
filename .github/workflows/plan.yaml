@@ -88,7 +88,7 @@ jobs:
 
             // const creator = context.payload.sender.login
             const opts = github.issues.listComments.endpoint.merge({
-              ...context.issue,
+              issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo
             })
