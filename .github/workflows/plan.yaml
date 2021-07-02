@@ -88,6 +88,8 @@ jobs:
 
             const comments = await github.paginate(opts)
 
+            console.log(comments)
+
             for (const comment of comments) {
               if (comment.body.startsWith(plan_header)) {
                 github.issues.updateComment({
