@@ -80,13 +80,6 @@ jobs:
 
             *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
 
-            // const opts = github.issues.listComments({
-            //   issue_number: context.issue.number,
-            //   owner: context.repo.owner,
-            //   repo: context.repo.repo
-            // })
-
-            // const creator = context.payload.sender.login
             const opts = github.issues.listComments.endpoint.merge({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -94,8 +87,6 @@ jobs:
             })
 
             const comments = await github.paginate(opts)
-
-            console.log(comments)
 
             for (const comment of comments) {
               if (comment.body.startsWith(plan_header)) {
@@ -108,15 +99,14 @@ jobs:
 
                 return
               }
-              else {
-                github.issues.createComment({
-                  issue_number: context.issue.number,
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  body: output
-                })
-              }
             }
+
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
 
       - name: Terraform Plan Status
         if: steps.tf-plan.outcome == 'failure'
