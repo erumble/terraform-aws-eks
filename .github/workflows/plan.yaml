@@ -20,7 +20,7 @@ jobs:
       matrix:
         workspace:
           - development
-          - production
+          # - production # this is an example of how to add/use additional environments
 
     env:
       TF_WORKSPACE: ${{ matrix.workspace }}
@@ -46,9 +46,10 @@ jobs:
         id: tf-validate
         run: terraform validate -no-color
 
+      # enable this and rename the `TF_WORKSPACE` env var to `TERRAFORM_WORKSPACE` if you want to automatically create workspaces
       # - name: Terraform Workspace
       #   id: tf-workspace
-      #   run: terraform workspace select ${{ env.TF_WORKSPACE }} || terraform workspace new ${{ env.TF_WORKSPACE }}
+      #   run: terraform workspace select ${{ env.TERRAFORM_WORKSPACE }} || terraform workspace new ${{ env.TERRAFORM_WORKSPACE }}
 
       - name: Terraform Plan
         id: tf-plan
@@ -59,7 +60,7 @@ jobs:
         uses: actions/github-script@v4
         if: github.event_name == 'pull_request'
         env:
-          PLAN: "Terraform\n${{ steps.tf-plan.outputs.stdout }}"
+          PLAN: ${{ steps.tf-plan.outputs.stdout }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -107,4 +108,3 @@ jobs:
       - name: Terraform Plan Status
         if: steps.tf-plan.outcome == 'failure'
         run: exit 1
-
