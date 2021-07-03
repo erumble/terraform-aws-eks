@@ -15,7 +15,7 @@ variable "environment" {
 variable "resource_prefix" {
   description = "String to prepend to any resource names."
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "vpc_azs" {
