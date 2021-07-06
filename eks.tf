@@ -71,8 +71,6 @@ resource "aws_iam_role_policy_attachment" "vpc_cni" {
 }
 
 data "aws_iam_policy_document" "vpc_cni_arp" {
-  for_each = toset(["vpc-cni", "kube-proxy", "coredns"])
-
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     effect  = "Allow"
