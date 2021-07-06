@@ -13,7 +13,7 @@ locals {
   vpc_azs          = formatlist("%s%s", data.aws_region.current.name, var.vpc_azs)
   vpc_name         = join("-", [var.resource_prefix, "eks-vpc"])
 
-  vpc_addon_versions = {
+  eks_addon_versions = {
     coredns = {
       "1.20" = "1.8.3"
       "1.19" = "1.8.0"
