@@ -2,7 +2,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.2.0"
 
-  name = "${local.resource_prefix}eks-vpc"
+  name = local.vpc_name
   cidr = var.vpc_cidr
 
   enable_ipv6            = var.vpc_enable_ipv6
@@ -13,5 +13,16 @@ module "vpc" {
   azs = local.vpc_azs
 
   private_subnets = var.vpc_private_subnets
-  public_subnets  = var.vpc_public_subnets
+
+  private_subnet_tags = {
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"                 = "1"
+  }
+
+  public_subnets = var.vpc_public_subnets
+
+  public_subnet_tags = {
+    "kubernetes.io/cluster/${local.eks_cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                          = "1"
+  }
 }
