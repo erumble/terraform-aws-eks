@@ -7,6 +7,17 @@ variable "aws_provider_external_id" {
   description = "The External ID to use when the provider assumes the given IAM role."
 }
 
+variable "eks_cluster_name_revision" {
+  description = "Name revision for EKS cluster. WARNING: Updating this will cause the EKS cluster to be destroyed and re-created."
+  type        = number
+  default     = 1
+}
+
+variable "eks_cluster_version" {
+  description = "Version of Kubernetes to deploy. See https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html."
+  type        = string
+}
+
 variable "environment" {
   description = "The name of the environment being created. Taggable resources will include this in their `Environment` tag."
   type        = string

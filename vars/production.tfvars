@@ -1,9 +1,9 @@
 # Add non-secret workspace specific variable values here
-environment     = "production"
-resource_prefix = "prod"
+environment         = "production"
+eks_cluster_version = "1.20"
+resource_prefix     = "prod"
 
-vpc_azs = ["a", "b", "c"]
-
+vpc_azs  = ["a", "b", "c"]
 vpc_cidr = "10.20.0.0/16"
 
 vpc_private_subnets = [
